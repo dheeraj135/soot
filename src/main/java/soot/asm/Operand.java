@@ -30,6 +30,7 @@ import org.objectweb.asm.tree.AbstractInsnNode;
 import soot.Local;
 import soot.Value;
 import soot.ValueBox;
+import soot.tagkit.BytecodeOffsetTag;
 
 /**
  * Stack operand.
@@ -94,6 +95,9 @@ final class Operand {
       boxes = list;
     } else {
       boxes = vb;
+    }
+    if (insn.getBytecodeOffset() != -1) {
+      vb.addTag(new BytecodeOffsetTag(insn.getBytecodeOffset()));
     }
   }
 
