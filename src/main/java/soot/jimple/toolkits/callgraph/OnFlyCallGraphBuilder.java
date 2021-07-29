@@ -1335,22 +1335,26 @@ public class OnFlyCallGraphBuilder {
 
       if (!registeredTransformation) {
         registeredTransformation = true;
-        PackManager.v()
-            .getPack("wjap")
-            .add(
-                new Transform(
-                    "wjap.guards",
-                    new SceneTransformer() {
+        try {
+          PackManager.v()
+              .getPack("wjap")
+              .add(
+                  new Transform(
+                      "wjap.guards",
+                      new SceneTransformer() {
 
-                      @Override
-                      protected void internalTransform(
-                          String phaseName, Map<String, String> options) {
-                        for (Guard g : guards) {
-                          insertGuard(g);
+                        @Override
+                        protected void internalTransform(
+                            String phaseName, Map<String, String> options) {
+                          for (Guard g : guards) {
+                            insertGuard(g);
+                          }
                         }
-                      }
-                    }));
-        PhaseOptions.v().setPhaseOption("wjap.guards", "enabled");
+                      }));
+          PhaseOptions.v().setPhaseOption("wjap.guards", "enabled");
+        } catch (RuntimeException e) {
+          System.err.println(e.getStackTrace());
+        }
       }
     }
 
